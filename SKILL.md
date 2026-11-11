@@ -157,6 +157,19 @@ If push fails:
 - Do not retry automatically
 - Continue with /improve and /compact
 
+## Checking CI and releases
+
+Use `gh-ci-skim` (`~/bin/gh-ci-skim`) instead of repeated raw `gh run view`, `gh run list`,
+`gh pr view` or `gh release list` calls. Each call returns one VERDICT:
+
+- `gh-ci-skim -R OWNER/REPO pr N`: PR state and the latest run per workflow for the head sha.
+- `gh-ci-skim -R OWNER/REPO run RUN_ID`: jobs, failed steps, matched `##[error]` lines and a log
+  tail. The full cleaned log is saved to `~/.cache/gh-ci-skim/RUN_ID.log`.
+- `gh-ci-skim -R OWNER/REPO runs --workflow FILE` and `gh-ci-skim -R OWNER/REPO-RELEASES releases`.
+
+Exit codes: 0 success, 1 failure, 3 pending, 2 error. It is a snapshot and never waits: between
+checks use the sleep tool, then call it again.
+
 ## Output Format
 
 ```
